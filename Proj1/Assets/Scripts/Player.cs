@@ -22,20 +22,38 @@ public class Player : MonoBehaviour
     private bool _jumpIsActive;
     private int _playerHealth;
     private float _currentTopSpeed;
+    private bool _alternateKeyPressed = false;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        startPosition();
-        _isVulnerable = true;
-        _jumpIsActive = false;
-        _playerHealth = 3;
+        
     }
 
     // Update is called once per frame
     void Update() {
-        movePlayer();
+        if (_playerHoldingBall) {
+            if (!_jumpIsActive) {
+                movePlayer();
+                rotatePlayer();
+                if (Input.GetKeyDown(JUMP_BUTTON)) {
+                    playerJump();
+                }
+                else if (Input.GetKeyDown(RELEASE_BALL)) {
+                    releaseBall();
+                }
+                else {
+                    checkForSpin();
+                }
+            }
+            else {
+                playerJumpMovement();
+            }
+        }
+        else {
+            movePlayer();
+        }
     }
 
 
@@ -50,18 +68,18 @@ public class Player : MonoBehaviour
         verticalInput = Input.GetAxis("Vertical");
         Vector3 direction = new Vector3(horizontalInput, verticalInput, _startingZ);
         transform.Translate(direction * _movementSpeed * Time.deltaTime);
-        if (Input.GetKeyDown("m")) {
-            _movementSpeed += 1;
-            _rotationSpeed += 1;
-        }
-        if (Input.GetKeyDown("n")) {
-            _movementSpeed -= 1;
-            _rotationSpeed -=1;
-        }
         transform.position = new Vector3(Mathf.Clamp(transform.position.x, MIN_X, MAX_X), 
                                          Mathf.Clamp(transform.position.y, MIN_Y, MAX_Y));
     }
 
+
+    // playerJump() begins the jump for the player
+    // Pre: Jump button input detected
+    // Post: jump begins
+    void playerJump() {
+        _isVulnerable = false;
+        _jumpIsActive = true;
+    }
     // OnCollisionEnter2D(Collider2D other) picks up the _spikeBall if it has been dropped or gets a power up
     // Pre: Player collides with object that has a collider
     // Post: player picks up ball or powers up
@@ -82,7 +100,7 @@ public class Player : MonoBehaviour
     // Pre: _playHoldingBall is false
     // Post: _playerHoldingBall true, ball is a child of the rotate GameObject
     void pickUpBall() {
-        GameState._playerHoldingBall = true;
+        _playerHoldingBall = true;
         _spikeBall.transform.parent = rotator.transform;
     }
 
@@ -120,6 +138,7 @@ public class Player : MonoBehaviour
         _rotationSpeed += INCREASE_ROTATION;
     }
 
+
     // setBallY() mutates spikeBall’s Y value in relation to parentObject
     // Pre: ball is picked up, or rotation speed is mutated
     // Post: spikeBall orbits closer or farther to player
@@ -132,32 +151,20 @@ public class Player : MonoBehaviour
     }
 
 
-    // calcBallSpeed() returns the speed of the spikeBall object
-    // Pre: coroutine, releaseBall() called
-    // Post: double returned
-    float calcBallSpeed() {
-        float ballSpeed = 0;
-        ballSpeed = _spikeBall.GetComponent<Rigidbody2D>().velocity.magnitude;
-        return ballSpeed;
-    }
-
-
     // releaseBall() throws the spike ball in its current tradjectory
     // Pre: _playerHoldingBall is true, release button pressed
     // Post: _playerHoldingBall set to false, releaseBall() called
     void releaseBall() {
         float ballSpeed = 0f;
-        Vector3 direction = new Vector3();
-        GameState._playerHoldingBall = false;
-        ballSpeed = calcBallSpeed();
-        _spikeBall.GetComponent<SpikeBall>().setSpeedAndDirection(ballSpeed, 
-                                                                  direction);
+        Vector3 direction = vector3.up;
+        _playerHoldingBall = false;
+        _spikeBall.GetComponent<SpikeBall>().setReleaseTradjectory();
         setRotation();
         _spikeBall.transform.parent = _objects.transform;
     }
 
 
-    // playerJumpMovment() rotates the player around the ball
+    // playerJumpMovement() rotates the player around the ball
     // Pre: user input the jump button
     // Post: player moves in arc around ball
     IEnumerator playerJumpMovement() {
@@ -188,7 +195,7 @@ public class Player : MonoBehaviour
     // checkForSpin() assess if spin should increase or not
     // Pre: player has ball
     // Post: player spins faster (maybe)
-    void checkForSpin(float _rotationSpeed, float _currentTopSpeed, bool _alternateKeyPressed) {
+    void checkForSpin() {
         if (!_alternateKeyPressed) {
             if (Input.GetKeyDown(ROTATE_KEY_1)) {
                 _alternateKeyPressed = true;

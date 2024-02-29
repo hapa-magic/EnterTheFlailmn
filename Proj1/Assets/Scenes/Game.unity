@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,37 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &103905237
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 103905238}
+  m_Layer: 0
+  m_Name: EnemyContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &103905238
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 103905237}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.9925032, y: 0.37843645, z: 0.020564094}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &283987183
 GameObject:
   m_ObjectHideFlags: 0
@@ -333,6 +364,37 @@ MonoBehaviour:
   _enemyPrefab: {fileID: 0}
   _enemyContainer: {fileID: 0}
   _enemiesKilled: 0
+--- !u!1 &759314997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 759314998}
+  m_Layer: 0
+  m_Name: Objects
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &759314998
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759314997}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.9925032, y: 0.37843645, z: 0.020564094}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &766385623
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,6 +406,7 @@ GameObject:
   - component: {fileID: 766385624}
   - component: {fileID: 766385625}
   - component: {fileID: 766385626}
+  - component: {fileID: 766385627}
   m_Layer: 0
   m_Name: Flail-1
   m_TagString: Untagged
@@ -430,6 +493,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd4f237caa5dbbf4b91bfd74b10532d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!50 &766385627
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 766385623}
+  m_BodyType: 0
+  m_Simulated: 0
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &782628375
 GameObject:
   m_ObjectHideFlags: 0
@@ -607,6 +697,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1054041982}
   - component: {fileID: 1054041981}
+  - component: {fileID: 1054041983}
   m_Layer: 0
   m_Name: PlayerSprite-1.png
   m_TagString: Untagged
@@ -681,6 +772,33 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1904071010}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!50 &1054041983
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1054041980}
+  m_BodyType: 0
+  m_Simulated: 0
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
 --- !u!1 &1055904485
 GameObject:
   m_ObjectHideFlags: 0
@@ -713,7 +831,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13a98dbcb281aea44a26db20e471786e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scoreText: {fileID: 0}
+  _scoreText: {fileID: 1159479427}
   _livesSprites: []
   _livesImg: {fileID: 0}
   _restartText: {fileID: 0}
@@ -832,13 +950,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementSpeed: 1
-  _rotationSpeed: 1
+  _rotationSpeed: 0.5
   rotator: {fileID: 1904071009}
-  _objects: {fileID: 0}
+  _objects: {fileID: 759314997}
   _jumpTime: 0
-  UIManager: {fileID: 0}
-  _spikeBall: {fileID: 0}
-  _playerSprite: {fileID: 0}
+  UIManager: {fileID: 1055904485}
+  _spikeBall: {fileID: 766385623}
+  _playerSprite: {fileID: 1054041980}
 --- !u!4 &1075181774
 Transform:
   m_ObjectHideFlags: 0
@@ -867,7 +985,7 @@ GameObject:
   - component: {fileID: 1159479428}
   - component: {fileID: 1159479427}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Score Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1192,3 +1310,5 @@ SceneRoots:
   - {fileID: 1075181774}
   - {fileID: 1055904490}
   - {fileID: 714880600}
+  - {fileID: 759314998}
+  - {fileID: 103905238}

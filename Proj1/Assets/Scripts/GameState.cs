@@ -12,14 +12,12 @@ public class GameState : MonoBehaviour
     private bool _stopSpawning;
     public int _enemiesKilled;
     public static bool _gameIsActive;
-    public static bool _playerHoldingBall;
 
     // Start is called before the first frame update
     void Start()
     {
         _enemiesKilled = 0;
         _gameIsActive = true;
-        _playerHoldingBall = true;
         StartCoroutine(spawnEnemyRoutine());
     }
 

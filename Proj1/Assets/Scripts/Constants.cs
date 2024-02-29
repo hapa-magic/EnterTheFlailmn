@@ -14,13 +14,14 @@ public static class Constants
     public const double MIN_ROTATION = 1;
     public const double MAX_ROTATION = 5;
     public const KeyCode JUMP_BUTTON = KeyCode.Space;
-    public const string ROTATE_KEY_1 = "m";
-    public const string ROTATE_KEY_2 = "n";
+    public const KeyCode ROTATE_KEY_1 = KeyCode.M;
+    public const KeyCode ROTATE_KEY_2 = KeyCode.N;
     public const KeyCode RESTART_GAME_BUTTON = KeyCode.R;
     public const KeyCode QUIT_GAME = KeyCode.Escape;
     public const int INIT_ROTATION_SPEED = 1;
     public const float INCREASE_ROTATION = 0.2f;
     public const float POWERUP_INCREMENT = 0.5f;
-
+    public const KeyCode RELEASE_BALL = KeyCode.Z;
+    public static bool _playerHoldingBall = true;
 
 }
