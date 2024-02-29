@@ -22,13 +22,14 @@ public class Player : MonoBehaviour
     private bool _jumpIsActive;
     private int _playerHealth;
     private float _currentTopSpeed;
-    private bool _alternateKeyPressed = false;
+    private bool _alternateKeyPressed;
     
 
     // Start is called before the first frame update
     void Start()
     {
         startPosition();
+        _alternateKeyPressed = false;
     }
 
     // Update is called once per frame
@@ -80,26 +81,12 @@ public class Player : MonoBehaviour
         _isVulnerable = false;
         _jumpIsActive = true;
     }
-    // OnCollisionEnter2D(Collider2D other) picks up the _spikeBall if it has been dropped or gets a power up
-    // Pre: Player collides with object that has a collider
-    // Post: player picks up ball or powers up
-    void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Enemy")) {
-            damage(1);
-        }
-        else if (other.gameObject.CompareTag("SpikeBall")) {
-            pickUpBall();
-        }
-        else if (other.gameObject.CompareTag("PowerUp")) {
-            powerUp();
-        }
-    }
 
 
     // pickUpBall() brings the spikeBall object back to the player
     // Pre: _playHoldingBall is false
     // Post: _playerHoldingBall true, ball is a child of the rotate GameObject
-    void pickUpBall() {
+    public void pickUpBall() {
         _playerHoldingBall = true;
         _spikeBall.transform.parent = rotator.transform;
     }
@@ -159,7 +146,7 @@ public class Player : MonoBehaviour
         GetComponentInChildren<SpikeBall>()._releaseTriggered = true;
         GetComponentInChildren<SpikeBall>()._speed = calcBallSpeed();
         setRotation();
-        _spikeBall.transform.passBallToObjects(this.transform, _objects.transform);
+        _spikeBall.transform.passBallToObjects(this.transform.position, rotator.transform, _objects.transform);
     }
 
 
@@ -191,7 +178,7 @@ public class Player : MonoBehaviour
     // damage() deals an amount of damage to player
     // Pre: enemy collides with player
     // Post: player health is lowered
-    void damage(int damagePoints) {
+    public void damage(int damagePoints) {
         _playerHealth -= damagePoints;
             if (_playerHealth < 1) {
             GameState.playerDeath();
@@ -221,7 +208,7 @@ public class Player : MonoBehaviour
     // powerUp() increases the current top speed
     // Pre: player character collides with power up
     // Post: _currentTopSpeed increased
-    void powerUp() {
+    public void powerUp() {
         if (_currentTopSpeed < MAX_ROTATION) {
             _currentTopSpeed += POWERUP_INCREMENT;
         }

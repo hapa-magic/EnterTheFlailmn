@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,13 +26,17 @@ public static class Constants
     public static bool _playerHoldingBall = true;
 
 
-    // setParent() changes the parent of an object
-    public static void passBallToObjects(this Transform child, Transform oldParent, Transform newParent) {
+    // passBallToObjects() changes the parent of an object and sets the launch vector
+    public static void passBallToObjects(this Transform child, Vector3 oldPOS, Transform oldParent, Transform newParent) {
         child.parent = newParent;
-        child.localPosition = oldParent.position;
-        Debug.Log(child.localPosition);
+        child.localPosition = oldPOS + sinCos(oldParent.rotation.eulerAngles.z * -1) * (float)MIN_BALL_LEASH;
+        child.gameObject.GetComponent<SpikeBall>().setReleaseTradjectory(oldParent.rotation.eulerAngles.z);
         child.localRotation = Quaternion.identity;
         child.localScale = new Vector3(0.75f, 0.75f, 1);
     }
     //public static void passBallToPlayer() {
+
+    public static Vector3 sinCos(float degree) {
+        return new Vector3(Mathf.Sin(degree / 180.0f * 3.14f), Mathf.Cos(degree / 180.0f * 3.14f), 0);
+    }
 }

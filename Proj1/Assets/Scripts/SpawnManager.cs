@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour
             newEnemy.transform.parent = _enemyContainer.transform;
 
             //yield for x seconds
-            yield return new WaitForSeconds(3.5f);
+            yield return new WaitForSeconds(10f);
         }
     }
 

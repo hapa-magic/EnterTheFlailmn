@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Timeline;
+using UnityEngine.UIElements;
 using static Constants;
 
 public class SpikeBall : MonoBehaviour
@@ -23,7 +24,6 @@ public class SpikeBall : MonoBehaviour
     void Update()
     {
         if (_releaseTriggered) {
-            setReleaseTradjectory();
             _deceleration = 1f;
             _releaseTriggered = false;
         }
@@ -31,15 +31,34 @@ public class SpikeBall : MonoBehaviour
             freeBallMovement();
             decayBallSpeed();
         }
-        _lastPOS = transform.position;
-        //Debug.Log(_lastPOS);
+        if (transform.position.x < MIN_X) {
+            if (_direction.x < 0) {
+                _direction = new Vector3(_direction.x * -1, _direction.y, 0);
+            }
+        }
+        if (transform.position.x > MAX_X) {
+            if (_direction.x > 0) {
+                _direction = new Vector3(_direction.x * -1, _direction.y, 0);
+            }
+        }
+        if (transform.position.y < MIN_Y) {
+            if (_direction.y < 0) {
+                _direction = new Vector3(_direction.x, _direction.y * -1, 0);
+            }
+        }
+        if (transform.position.y > MAX_Y) {
+            if (_direction.y > 0) {
+                _direction = new Vector3(_direction.x, _direction.y * -1, 0);
+            }
+        }
     }
 
 
     // OnCollisionEnter2D() bounces the ball off an object
     // Pre: ball collides with an object
     // Post: ball bounces off in a new direction
-    void OnCollisionEnter2D(Collision2D other) {
+    private void OnTriggerEnter2D(Collider2D other) {
+        Debug.Log("Ball has triggwered event");
         //If (other is edge or enemy) {
             //Calculate the angle of incidence
             //Set _direction based on angle of reflection
@@ -49,8 +68,9 @@ public class SpikeBall : MonoBehaviour
 
     // setReleaseTradjectory() 
     // TODO: Write this function, also start tracking the _lastPOS
-    void setReleaseTradjectory() {
-        _direction = (transform.position - _lastPOS);
+    public void setReleaseTradjectory(float degrees) {
+        Vector3 tempVector = sinCos(degrees * -1);
+        _direction = new Vector3(-1 * tempVector.y, tempVector.x, 0);
     }
 
 
