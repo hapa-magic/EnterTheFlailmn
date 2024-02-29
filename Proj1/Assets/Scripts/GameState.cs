@@ -18,7 +18,7 @@ public class GameState : MonoBehaviour
     {
         _enemiesKilled = 0;
         _gameIsActive = true;
-        StartCoroutine(spawnEnemyRoutine());
+        //StartCoroutine(spawnEnemyRoutine());
     }
 
     // Update is called once per frame

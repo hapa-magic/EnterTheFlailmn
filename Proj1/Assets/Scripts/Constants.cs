@@ -24,4 +24,14 @@ public static class Constants
     public const KeyCode RELEASE_BALL = KeyCode.Z;
     public static bool _playerHoldingBall = true;
 
+
+    // setParent() changes the parent of an object
+    public static void passBallToObjects(this Transform child, Transform oldParent, Transform newParent) {
+        child.parent = newParent;
+        child.localPosition = oldParent.position;
+        Debug.Log(child.localPosition);
+        child.localRotation = Quaternion.identity;
+        child.localScale = new Vector3(0.75f, 0.75f, 1);
+    }
+    //public static void passBallToPlayer() {
 }

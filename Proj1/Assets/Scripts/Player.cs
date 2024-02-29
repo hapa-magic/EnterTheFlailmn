@@ -28,7 +28,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        startPosition();
     }
 
     // Update is called once per frame
@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
                 playerJumpMovement();
             }
         }
-        else {
+        else if (!_jumpIsActive) {
             movePlayer();
         }
     }
@@ -155,12 +155,18 @@ public class Player : MonoBehaviour
     // Pre: _playerHoldingBall is true, release button pressed
     // Post: _playerHoldingBall set to false, releaseBall() called
     void releaseBall() {
-        float ballSpeed = 0f;
-        Vector3 direction = vector3.up;
         _playerHoldingBall = false;
-        _spikeBall.GetComponent<SpikeBall>().setReleaseTradjectory();
+        GetComponentInChildren<SpikeBall>()._releaseTriggered = true;
+        GetComponentInChildren<SpikeBall>()._speed = calcBallSpeed();
         setRotation();
-        _spikeBall.transform.parent = _objects.transform;
+        _spikeBall.transform.passBallToObjects(this.transform, _objects.transform);
+    }
+
+
+    float calcBallSpeed() {
+        float _ballSpeed = ((float)_rotationSpeed * (float)MIN_BALL_LEASH * 2 * 3.142f);
+        Debug.Log(_ballSpeed);
+        return _ballSpeed;
     }
 
 
@@ -168,7 +174,7 @@ public class Player : MonoBehaviour
     // Pre: user input the jump button
     // Post: player moves in arc around ball
     IEnumerator playerJumpMovement() {
-        
+        Debug.Log("I'm jumping!!!! Jump so high!");
         yield return new WaitForSeconds(5f);
     }
 
