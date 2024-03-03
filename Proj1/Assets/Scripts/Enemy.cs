@@ -15,6 +15,7 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private AudioSource _audioSource;
     private bool _canDamage;
+    private bool _alwaysOn;
     
 
     // Start is called before the first frame update
@@ -23,17 +24,19 @@ public class Enemy : MonoBehaviour
         _anim = GetComponent<Animator>();
         _collider = GetComponent<BoxCollider2D>();
         _player = GameObject.Find("Player").GetComponent<Player>();
+        Debug.Log(_player);
         _audioSource = GetComponent<AudioSource>();
         _enemySprite = this.gameObject.transform.GetChild(0);
         _canDamage = true;
+        _alwaysOn = true;
+        StartCoroutine(enemyMovement());
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.A)) {
-            StartCoroutine(enemyMovement());
-        }
+
     }
 
 
@@ -41,6 +44,7 @@ public class Enemy : MonoBehaviour
     // Pre: enemy exists
     // Post: enemy moves towards player
     IEnumerator enemyMovement() {
+        while (_alwaysOn) {
         Vector3 whereToMove = _player.transform.position - transform.position;
         float savedTime = Time.time;
         while (Time.time - savedTime >= _jumpTime) {
@@ -55,6 +59,9 @@ public class Enemy : MonoBehaviour
             _enemySprite.transform.Translate(Vector3.down * accel * Time.deltaTime);
         }
         _canDamage = true;
+        new WaitForSeconds(2f);
+        }
         yield return new WaitForSeconds(2f);
+
     }
 }

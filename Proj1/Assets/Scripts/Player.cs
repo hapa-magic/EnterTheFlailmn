@@ -7,7 +7,7 @@ using static Constants;
 
 public class Player : MonoBehaviour
 {
-    private int _startingZ = -5;
+    private int _startingZ = 0;
     [SerializeField] private float _movementSpeed = 1.0f;
     [SerializeField] private float _rotationSpeed = 1.0f;
     [SerializeField] private GameObject rotator;
@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     {
         startPosition();
         _alternateKeyPressed = false;
+        //setBallPosition();
     }
 
     // Update is called once per frame
@@ -78,8 +79,8 @@ public class Player : MonoBehaviour
     // Pre: Jump button input detected
     // Post: jump begins
     void playerJump() {
-        _isVulnerable = false;
-        _jumpIsActive = true;
+        //_isVulnerable = false;
+        //_jumpIsActive = true;
     }
 
 
@@ -88,7 +89,17 @@ public class Player : MonoBehaviour
     // Post: _playerHoldingBall true, ball is a child of the rotate GameObject
     public void pickUpBall() {
         _playerHoldingBall = true;
+        Vector3 targ = _spikeBall.transform.position;
+        targ.z = 0f;
+
+        Vector3 objectPos = rotator.transform.position;
+        targ.x = targ.x - objectPos.x;
+        targ.y = targ.y - objectPos.y;
+
+        float angle = Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg;
+        rotator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
         _spikeBall.transform.parent = rotator.transform;
+        setBallPosition();
     }
 
 
@@ -109,12 +120,19 @@ public class Player : MonoBehaviour
     }
 
 
-    // setRotation() sets the _rotationSpeed variable as a fixed number
+    // setRotationSpeed() sets the _rotationSpeed variable as a fixed number
     // Pre: ball is picked up, game starts
     // Post: spikeBall begins to rotate
-    void setRotation() {
-        _rotationSpeed = 1.0f;
-        setBallPosition();
+    void setRotationSpeed() {
+        _rotationSpeed = STARTING_ROTATION_SPEED;
+    }
+
+
+    // setRotationSpeed() sets the _rotationSpeed as the number passed through
+    // Pre: float passed
+    // Post: float changed
+    void setRotationSpeed(float increase) {
+        _rotationSpeed = increase;
     }
 
 
@@ -130,11 +148,7 @@ public class Player : MonoBehaviour
     // Pre: ball is picked up, or rotation speed is mutated
     // Post: spikeBall orbits closer or farther to player
     void setBallPosition() {
-        double ballLeashMultiplier = MAX_BALL_LEASH - MIN_BALL_LEASH;
-        double leashRatio = _rotationSpeed / MAX_ROTATION;
-        leashRatio *= ballLeashMultiplier;
-        leashRatio += MIN_BALL_LEASH;
-        _spikeBall.transform.position = new Vector3 (0, (float)leashRatio, 0);
+        _spikeBall.transform.localPosition = new Vector3(0, (float)MIN_BALL_LEASH, 0);
     }
 
 
@@ -145,14 +159,13 @@ public class Player : MonoBehaviour
         _playerHoldingBall = false;
         GetComponentInChildren<SpikeBall>()._releaseTriggered = true;
         GetComponentInChildren<SpikeBall>()._speed = calcBallSpeed();
-        setRotation();
+        setRotationSpeed();
         _spikeBall.transform.passBallToObjects(this.transform.position, rotator.transform, _objects.transform);
     }
 
 
     float calcBallSpeed() {
-        float _ballSpeed = ((float)_rotationSpeed * (float)MIN_BALL_LEASH * 2 * 3.142f);
-        Debug.Log(_ballSpeed);
+        float _ballSpeed = (_rotationSpeed * (float)MIN_BALL_LEASH * 2 * 3.142f);
         return _ballSpeed;
     }
 

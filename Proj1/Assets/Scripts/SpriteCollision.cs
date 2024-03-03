@@ -5,10 +5,11 @@ using UnityEngine;
 public class SpriteCollision : MonoBehaviour
 {
     [SerializeField] public GameObject _grandParent;
+    private Player _playerParent;
     // Start is called before the first frame update
     void Start()
     {
-        
+        _playerParent = _grandParent.GetComponent<Player>();
     }
 
     // Update is called once per frame
@@ -19,17 +20,19 @@ public class SpriteCollision : MonoBehaviour
     // OnCollisionEnter2D(Collider2D other) picks up the _spikeBall if it has been dropped or gets a power up
     // Pre: Player collides with object that has a collider
     // Post: player picks up ball or powers up
-    private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("Collision detected!!!!!!!!!!!!!!!");
+    private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Enemy")) {
-            _grandParent.GetComponent<Player>().damage(1);
-        }
-        else if (other.gameObject.CompareTag("SpikeBall")) {
-            Debug.Log("Picked the ball up!");
-            _grandParent.GetComponent<Player>().pickUpBall();
+            _playerParent.damage(1);
         }
         else if (other.gameObject.CompareTag("PowerUp")) {
-            _grandParent.GetComponent<Player>().powerUp();
+            _playerParent.powerUp();
+        }
+    }
+
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("SpikeBall")) {
+            _playerParent.pickUpBall();
         }
     }
 }

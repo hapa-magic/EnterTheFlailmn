@@ -57,8 +57,10 @@ public class SpikeBall : MonoBehaviour
     // OnCollisionEnter2D() bounces the ball off an object
     // Pre: ball collides with an object
     // Post: ball bounces off in a new direction
-    private void OnTriggerEnter2D(Collider2D other) {
-        Debug.Log("Ball has triggwered event");
+    private void OnCollisionEnter2D(Collision2D other) {
+        if (other.gameObject.CompareTag("Enemy")) {
+            Debug.Log("Ball has triggwered event");
+        }
         //If (other is edge or enemy) {
             //Calculate the angle of incidence
             //Set _direction based on angle of reflection
