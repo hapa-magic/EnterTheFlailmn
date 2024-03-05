@@ -116,7 +116,7 @@ public class Player : MonoBehaviour
     // Pre: _playerHoldingBall set to true, update() is called, game active
     // Post: playerSprite and spikeBall rotate around playerParent object
     void rotatePlayer() {
-        rotator.transform.Rotate(0, 0, _rotationSpeed);
+        rotator.transform.Rotate(0, 0, 360 * Time.deltaTime * _rotationSpeed);
     }
 
 

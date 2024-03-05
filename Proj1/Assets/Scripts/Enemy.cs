@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Transactions;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
     [SerializeField] private float _speed;
-    [SerializeField] private float _enemyJumpSpeed = 1.0f;
-    [SerializeField] private float _jumpTime = 3f;
+    [SerializeField] private float _enemyJumpSpeed;
+    [SerializeField] private float _jumpTime;
     [SerializeField] private float _initVelocity = 1.5f;
     private Transform _enemySprite;
     private Transform _enemyShadow;
@@ -46,25 +47,41 @@ public class Enemy : MonoBehaviour
     // Post: enemy moves towards player
     IEnumerator enemyMovement() {
         while (_alwaysOn) {
-            Vector3 whereToMove = _player.position - transform.position;
-            Debug.Log(whereToMove);
+            Vector3 whereToMove = findTarget();
             float savedTime = Time.time;
+            _canDamage = false;
             while (Time.time - savedTime <= _jumpTime) {
-                _canDamage = false;
                 transform.Translate(whereToMove.normalized * _speed * Time.deltaTime);
                 _enemySprite.transform.Translate(Vector3.up * Time.deltaTime * _enemyJumpSpeed);
                 yield return new WaitForSeconds(0.001f);
             }
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(.3f);
             savedTime = Time.time;
-            while (_enemySprite.position.y > _enemyShadow.position.y) {
-                float accel = Mathf.Pow(_initVelocity, Time.time - savedTime);
+            float savedX = transform.position.x;
+            while (Time.time - savedTime <= .5f) {
+                transform.position = new Vector3(savedX + Mathf.Sin((Time.time - savedTime) * 8 * Mathf.PI) * .25f, transform.position.y, 0);
+                yield return new WaitForSeconds(0.001f);
+            }
+            yield return new WaitForSeconds(.3f);
+            savedTime = Time.time;
+            float accel = 2f;
+            while (_enemySprite.position.y > transform.position.y) {
                 _enemySprite.transform.Translate(Vector3.down * accel * Time.deltaTime);
+                if (_enemySprite.transform.position.y < transform.position.y) {
+                    _enemySprite.position = transform.position;
+                }
+                accel *= 1.25f;
+                yield return new WaitForSeconds(0.01f);
             }
             _canDamage = true;
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1.5f);
         }
     }
 
+    Vector3 findTarget() {
+        Vector3 whereToMove = _player.position - transform.position;
+        Debug.Log(whereToMove);
+        return whereToMove;
+    }
 
 }

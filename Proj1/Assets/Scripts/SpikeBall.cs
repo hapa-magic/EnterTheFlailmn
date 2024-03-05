@@ -72,7 +72,7 @@ public class SpikeBall : MonoBehaviour
     // TODO: Write this function, also start tracking the _lastPOS
     public void setReleaseTradjectory(float degrees) {
         Vector3 tempVector = sinCos(degrees * -1);
-        _direction = new Vector3(-1 * tempVector.y, tempVector.x, 0);
+        _direction = new Vector3(-1 * tempVector.y, tempVector.x, 0).normalized;
     }
 
 

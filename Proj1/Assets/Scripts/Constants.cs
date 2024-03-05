@@ -24,7 +24,7 @@ public static class Constants
     public const float POWERUP_INCREMENT = 0.5f;
     public const KeyCode RELEASE_BALL = KeyCode.Z;
     public static bool _playerHoldingBall = true;
-    public const float STARTING_ROTATION_SPEED = 2f;
+    public const float STARTING_ROTATION_SPEED = 1.0f;
 
 
     // passBallToObjects() changes the parent of an object and sets the launch vector
