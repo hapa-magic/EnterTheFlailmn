@@ -1145,7 +1145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _movementSpeed: 4
-  _rotationSpeed: 2
+  _rotationSpeed: 1
   rotator: {fileID: 1904071009}
   _objects: {fileID: 759314997}
   _jumpTime: 0
