@@ -25,6 +25,7 @@ public static class Constants
     public const KeyCode RELEASE_BALL = KeyCode.Z;
     public static bool _playerHoldingBall = true;
     public const float STARTING_ROTATION_SPEED = 1.0f;
+    public static bool _gameIsActive = true;
 
 
     // passBallToObjects() changes the parent of an object and sets the launch vector

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SpikeBall
   - Enemy
+  - PowerUp
   layers:
   - Default
   - TransparentFX

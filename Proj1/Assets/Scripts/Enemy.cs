@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
     private Transform _player;
     private AudioSource _audioSource;
     private bool _canDamage;
-    private bool _alwaysOn;
+    private bool _isAlive;
     
 
     // Start is called before the first frame update
@@ -31,7 +31,7 @@ public class Enemy : MonoBehaviour
         _enemySprite = transform.GetChild(0);
         _enemyShadow = transform.GetChild(1);
         _canDamage = true;
-        _alwaysOn = true;
+        _isAlive = true;
         StartCoroutine(enemyMovement());
     }
 
@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
     // Pre: enemy exists
     // Post: enemy moves towards player
     IEnumerator enemyMovement() {
-        while (_alwaysOn) {
+        while (_isAlive) {
             Vector3 whereToMove = findTarget();
             float savedTime = Time.time;
             _canDamage = false;
@@ -59,11 +59,10 @@ public class Enemy : MonoBehaviour
             savedTime = Time.time;
             float savedX = transform.position.x;
             while (Time.time - savedTime <= .5f) {
-                transform.position = new Vector3(savedX + Mathf.Sin((Time.time - savedTime) * 8 * Mathf.PI) * .25f, transform.position.y, 0);
+                transform.position = new Vector3(savedX + Mathf.Sin((Time.time - savedTime) * 8 * Mathf.PI) * .2f, transform.position.y, 0);
                 yield return new WaitForSeconds(0.001f);
             }
             yield return new WaitForSeconds(.3f);
-            savedTime = Time.time;
             float accel = 2f;
             while (_enemySprite.position.y > transform.position.y) {
                 _enemySprite.transform.Translate(Vector3.down * accel * Time.deltaTime);
@@ -82,6 +81,25 @@ public class Enemy : MonoBehaviour
         Vector3 whereToMove = _player.position - transform.position;
         Debug.Log(whereToMove);
         return whereToMove;
+    }
+
+    public void damage() {
+        if (_canDamage == true) {
+            StartCoroutine(destroyEnemy());
+        }
+    }
+
+    IEnumerator destroyEnemy() {
+        for (int i = 0; i < 3; ++i) {
+            _isAlive = false;
+            transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+            transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
+            yield return new WaitForSeconds(0.1f);
+            transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = true;
+            transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
+            yield return new WaitForSeconds(0.2f);
+        }
+        Destroy(gameObject);
     }
 
 }

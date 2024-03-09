@@ -11,22 +11,13 @@ public class GameState : MonoBehaviour
     [SerializeField] private GameObject _enemyContainer;
     private bool _stopSpawning;
     public int _enemiesKilled;
-    public static bool _gameIsActive;
 
     // Start is called before the first frame update
     void Start()
     {
         _enemiesKilled = 0;
-        _gameIsActive = true;
-        //StartCoroutine(spawnEnemyRoutine());
+        StartCoroutine(spawnEnemyRoutine());
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     
 
     // spawnEnemyRoutine() periodically spawns enemies
@@ -36,8 +27,8 @@ public class GameState : MonoBehaviour
         int _randNum = 0;
         float _spawnX = 0;
         float _spawnY = 0;
-        Vector3 _spawnVector = new Vector3(0, 0, 0);
-        while (!_stopSpawning) {
+        Vector3 _spawnVector = Vector3.zero;
+        while (_gameIsActive) {
             _randNum = Random.Range(1, 4);
             _spawnX = Random.Range(MIN_X, MIN_Y);
             _spawnY = Random.Range(MIN_Y, MAX_Y);
@@ -59,8 +50,8 @@ public class GameState : MonoBehaviour
                 break;
             }
             Instantiate(_enemyPrefab, _spawnVector, Quaternion.identity, _enemyContainer.GetComponent<Transform>());
+            yield return new WaitForSeconds(Random.Range(2, 8));
         }
-        yield return new WaitForSeconds(Random.Range(9, 15));
     }
 
 
