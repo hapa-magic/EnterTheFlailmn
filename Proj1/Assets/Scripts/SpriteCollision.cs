@@ -25,11 +25,16 @@ public class SpriteCollision : MonoBehaviour
             Debug.Log("Hey! We're taking damage :(");
             _playerParent.damage(1);
         }
-        else if (other.gameObject.CompareTag("PowerUp")) {
-            _playerParent.powerUp();
-        }
         else if (other.gameObject.CompareTag("SpikeBall")) {
             _playerParent.pickUpBall();
+        }
+    }
+    
+    void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("PowerUp")) {
+            Debug.Log("Powered up!");
+            _playerParent.powerUp();
+            Destroy(other.gameObject);
         }
     }
 }

@@ -23,6 +23,7 @@ public class Player : MonoBehaviour
     private int _playerHealth;
     private float _currentTopSpeed;
     private bool _alternateKeyPressed;
+    UIManager _UIManager;
     
 
     // Start is called before the first frame update
@@ -30,6 +31,9 @@ public class Player : MonoBehaviour
     {
         startPosition();
         _alternateKeyPressed = false;
+        _UIManager = UIManager.GetComponent<UIManager>();
+        _playerHealth = 3;
+        _currentTopSpeed = (float)MIN_ROTATION;
         //setBallPosition();
     }
 
@@ -125,6 +129,7 @@ public class Player : MonoBehaviour
     // Post: spikeBall begins to rotate
     void setRotationSpeed() {
         _rotationSpeed = STARTING_ROTATION_SPEED;
+        _UIManager.UpdateCurrentSpeed(_rotationSpeed);
     }
 
 
@@ -133,14 +138,16 @@ public class Player : MonoBehaviour
     // Post: float changed
     void setRotationSpeed(float increase) {
         _rotationSpeed = increase;
+        _UIManager.UpdateCurrentSpeed(_rotationSpeed);
     }
 
 
     // increaseRotation() mutates the _rotationSpeed variable
     // Pre: player input
     // Post: _rotationSpeed changed
-    void increaseRotation() {
+    public void increaseRotation() {
         _rotationSpeed += INCREASE_ROTATION;
+        _UIManager.UpdateCurrentSpeed(_rotationSpeed);
     }
 
 
@@ -224,6 +231,7 @@ public class Player : MonoBehaviour
     public void powerUp() {
         if (_currentTopSpeed < MAX_ROTATION) {
             _currentTopSpeed += POWERUP_INCREMENT;
+            _UIManager.UpdateTopSpeed(_currentTopSpeed);
         }
     }
 }

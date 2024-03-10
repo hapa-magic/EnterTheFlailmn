@@ -9,6 +9,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private float _enemyJumpSpeed;
     [SerializeField] private float _jumpTime;
     [SerializeField] private float _initVelocity = 1.5f;
+    [SerializeField] GameObject _parentObject;
     private Transform _enemySprite;
     private Transform _enemyShadow;
     private Animator _anim;
@@ -16,6 +17,7 @@ public class Enemy : MonoBehaviour
     private GameObject _playerGO;
     private Transform _player;
     private AudioSource _audioSource;
+    private GameObject _powerUp;
     private bool _canDamage;
     private bool _isAlive;
     
@@ -90,6 +92,7 @@ public class Enemy : MonoBehaviour
     }
 
     IEnumerator destroyEnemy() {
+        _powerUp = transform.parent.GetComponent<EnemyContainerScript>()._powerUp;
         for (int i = 0; i < 3; ++i) {
             _isAlive = false;
             transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
@@ -99,6 +102,7 @@ public class Enemy : MonoBehaviour
             transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
             yield return new WaitForSeconds(0.2f);
         }
+        Instantiate(_powerUp, transform.position, Quaternion.identity, transform.parent.GetComponent<EnemyContainerScript>()._objects.transform);
         Destroy(gameObject);
     }
 

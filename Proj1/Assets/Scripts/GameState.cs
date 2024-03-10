@@ -34,19 +34,19 @@ public class GameState : MonoBehaviour
             _spawnY = Random.Range(MIN_Y, MAX_Y);
             switch(_randNum) {
                 case 1:
-                    _spawnVector = new Vector3(_spawnX, MIN_Y);
+                    _spawnVector = new Vector3(_spawnX, MIN_Y, 0);
                 break;
 
                 case 2:
-                    _spawnVector = new Vector3(_spawnX, MAX_Y);
+                    _spawnVector = new Vector3(_spawnX, MAX_Y, 0);
                 break;
 
                 case 3:
-                    _spawnVector = new Vector3(MIN_X, _spawnY);
+                    _spawnVector = new Vector3(MIN_X, _spawnY, 0);
                 break;
 
                 case 4:
-                    _spawnVector = new Vector3(MAX_X, _spawnY);
+                    _spawnVector = new Vector3(MAX_X, _spawnY, 0);
                 break;
             }
             Instantiate(_enemyPrefab, _spawnVector, Quaternion.identity, _enemyContainer.GetComponent<Transform>());
@@ -67,6 +67,6 @@ public class GameState : MonoBehaviour
     // Pre: player runs out of health
     // Post: death screen output to player
     public static void printDeathScreen() {
-        
+        Time.timeScale = 0f;
     }
 }
