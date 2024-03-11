@@ -7,8 +7,11 @@ using static Constants;
 public class GameState : MonoBehaviour
 {
     [SerializeField] private GameObject uiCanvas;
-    [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _enemyPrefab1;
+    [SerializeField] private GameObject _enemyPrefab2;
+    [SerializeField] private GameObject _enemyPrefab3;
     [SerializeField] private GameObject _enemyContainer;
+    UIManager _uIManager;
     private bool _stopSpawning;
     public int _enemiesKilled;
 
@@ -16,6 +19,7 @@ public class GameState : MonoBehaviour
     void Start()
     {
         _enemiesKilled = 0;
+        _uIManager = uiCanvas.GetComponent<UIManager>();
         StartCoroutine(spawnEnemyRoutine());
     }
     
@@ -30,7 +34,7 @@ public class GameState : MonoBehaviour
         Vector3 _spawnVector = Vector3.zero;
         while (_gameIsActive) {
             _randNum = Random.Range(1, 4);
-            _spawnX = Random.Range(MIN_X, MIN_Y);
+            _spawnX = Random.Range(MIN_X, MAX_X);
             _spawnY = Random.Range(MIN_Y, MAX_Y);
             switch(_randNum) {
                 case 1:
@@ -49,8 +53,13 @@ public class GameState : MonoBehaviour
                     _spawnVector = new Vector3(MAX_X, _spawnY, 0);
                 break;
             }
-            Instantiate(_enemyPrefab, _spawnVector, Quaternion.identity, _enemyContainer.GetComponent<Transform>());
-            yield return new WaitForSeconds(Random.Range(2, 8));
+            Instantiate(_enemyPrefab1, _spawnVector, Quaternion.identity, _enemyContainer.transform);
+            yield return new WaitForSeconds(Random.Range(1, 2));
+            if (_uIManager.GetScore() > 25) {
+                
+            }
+            Instantiate(_enemyPrefab2, _spawnVector * -1, Quaternion.identity, _enemyContainer.transform);
+            yield return new WaitForSeconds(Random.Range(3, 5));
         }
     }
 

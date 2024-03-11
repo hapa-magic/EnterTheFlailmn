@@ -13,11 +13,19 @@ public class SpikeBall : MonoBehaviour
     private Vector3 _lastPOS;
     public bool _releaseTriggered;
     public float _speed;
+    public int _score;
+    [SerializeField] public Sprite _initSprite;
+    [SerializeField] public Sprite _glowBallSprite;
+    [SerializeField] public Sprite _greenBallSprite;
+    [SerializeField] public Sprite _glowGreenBallSprite;
+    [SerializeField] public GameObject _UIManager;
+    private UIManager _uIManager;
 
     // Start is called before the first frame update
     void Start()
     {
         _releaseTriggered = false;
+        _uIManager = _UIManager.GetComponent<UIManager>();
     }
 
     // Update is called once per frame
@@ -60,7 +68,23 @@ public class SpikeBall : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Enemy")) {
             other.gameObject.GetComponent<Enemy>().damage();
+            _score += 5;
         }
+        else if (other.gameObject.CompareTag("BlueEnemy")) {
+            if ((GetComponent<SpriteRenderer>().sprite == _glowBallSprite) ||
+                (GetComponent<SpriteRenderer>().sprite == _glowGreenBallSprite))  {
+                other.gameObject.GetComponent<Enemy>().damage();
+                _score += 9;
+            }
+        }
+        else if (other.gameObject.CompareTag("GreenEnemy")) {
+            if ((GetComponent<SpriteRenderer>().sprite == _greenBallSprite) ||
+                (GetComponent<SpriteRenderer>().sprite == _glowGreenBallSprite)) {
+                other.gameObject.GetComponent<Enemy>().damage();
+                _score += 7;
+            }
+        }
+        _uIManager.UpdateScore(_score);
     }
 
 

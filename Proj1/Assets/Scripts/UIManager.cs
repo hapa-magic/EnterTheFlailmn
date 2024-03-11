@@ -15,6 +15,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text _topSpeed;
     [SerializeField] private GameObject _player;
     private GameState _gameManager;
+    private int _score;
 
     void Start()
     {
@@ -31,6 +32,7 @@ public class UIManager : MonoBehaviour
     // Post: score updated in UI
     public void UpdateScore(int playerScore)
     {
+        _score += playerScore;
         _scoreText.text = "Score: " + playerScore.ToString();
     }
 
@@ -40,6 +42,10 @@ public class UIManager : MonoBehaviour
 
     public void UpdateTopSpeed(float topSpeed) {
         _topSpeed.text = "Top speed: " + topSpeed;
+    }
+
+    public int GetScore() {
+        return _score;
     }
 
     // updateLives() is called whenever the player takes damage

@@ -103,6 +103,7 @@ public class Player : MonoBehaviour
         float angle = Mathf.Atan2(targ.y, targ.x) * Mathf.Rad2Deg;
         rotator.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle - 90));
         _spikeBall.transform.parent = rotator.transform;
+        _spikeBall.GetComponent<SpriteRenderer>().sprite = _spikeBall.GetComponent<SpikeBall>()._initSprite;
         setBallPosition();
     }
 
@@ -148,6 +149,9 @@ public class Player : MonoBehaviour
     public void increaseRotation() {
         _rotationSpeed += INCREASE_ROTATION;
         _UIManager.UpdateCurrentSpeed(_rotationSpeed);
+        if (_rotationSpeed > 3) {
+            _spikeBall.GetComponent<SpriteRenderer>().sprite = _spikeBall.GetComponent<SpikeBall>()._glowBallSprite;
+        }
     }
 
 

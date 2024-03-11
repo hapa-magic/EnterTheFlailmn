@@ -34,6 +34,12 @@ public static class Constants
         Vector2 sinAdjustment = sinCos(oldParent.rotation.eulerAngles.z);
         child.localPosition = oldPOS + new Vector3(sinAdjustment.x * -1, sinAdjustment.y, 0) * (float)MIN_BALL_LEASH;
         child.gameObject.GetComponent<SpikeBall>().setReleaseTradjectory(oldParent.rotation.eulerAngles.z);
+        if (child.GetComponent<SpriteRenderer>().sprite = child.GetComponent<SpikeBall>()._initSprite) {
+            child.GetComponent<SpriteRenderer>().sprite = child.GetComponent<SpikeBall>()._greenBallSprite;
+        }
+        else {
+            child.GetComponent<SpriteRenderer>().sprite = child.GetComponent<SpikeBall>()._glowGreenBallSprite;
+        }
         child.localRotation = Quaternion.identity;
         child.localScale = new Vector3(1.5f, 1.5f, 1);
     }

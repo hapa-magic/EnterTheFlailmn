@@ -18,7 +18,7 @@ public class Enemy : MonoBehaviour
     private Transform _player;
     private AudioSource _audioSource;
     private GameObject _powerUp;
-    private bool _canDamage;
+    public bool _canDamage;
     private bool _isAlive;
     
 
@@ -92,6 +92,7 @@ public class Enemy : MonoBehaviour
     }
 
     IEnumerator destroyEnemy() {
+        _canDamage = false;
         _powerUp = transform.parent.GetComponent<EnemyContainerScript>()._powerUp;
         for (int i = 0; i < 3; ++i) {
             _isAlive = false;
