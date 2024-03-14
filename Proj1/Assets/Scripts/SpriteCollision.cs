@@ -22,7 +22,7 @@ public class SpriteCollision : MonoBehaviour
     // Post: player picks up ball or powers up
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Enemy")) {
-            if (other.gameObject.GetComponent<Enemy>()._canDamage = true) {
+            if (other.gameObject.GetComponent<Enemy>()._canDamage == true) {
                 Debug.Log("Hey! We're taking damage :(");
                 _playerParent.damage(1);
             }
