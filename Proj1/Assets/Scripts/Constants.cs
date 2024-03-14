@@ -14,7 +14,6 @@ public static class Constants
     public const double MAX_BALL_LEASH = 2.5f;
     public const double MIN_ROTATION = 1;
     public const double MAX_ROTATION = 5;
-    public const KeyCode JUMP_BUTTON = KeyCode.Space;
     public const KeyCode ROTATE_KEY_1 = KeyCode.M;
     public const KeyCode ROTATE_KEY_2 = KeyCode.N;
     public const KeyCode RESTART_GAME_BUTTON = KeyCode.R;

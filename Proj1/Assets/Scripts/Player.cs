@@ -8,7 +8,7 @@ using static Constants;
 public class Player : MonoBehaviour
 {
     private int _startingZ = 0;
-    [SerializeField] private float _movementSpeed = 1.0f;
+    [SerializeField] private float _movementSpeed;
     [SerializeField] private float _rotationSpeed = 1.0f;
     [SerializeField] private GameObject rotator;
     [SerializeField] private GameObject _objects;
@@ -33,6 +33,7 @@ public class Player : MonoBehaviour
         _alternateKeyPressed = false;
         _UIManager = UIManager.GetComponent<UIManager>();
         _playerHealth = 3;
+        _movementSpeed = 2f;
         _currentTopSpeed = (float)MIN_ROTATION;
         //setBallPosition();
     }
@@ -40,26 +41,15 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update() {
         if (_playerHoldingBall) {
-            if (!_jumpIsActive) {
-                movePlayer();
-                rotatePlayer();
-                if (Input.GetKeyDown(JUMP_BUTTON)) {
-                    playerJump();
-                }
-                else if (Input.GetKeyDown(RELEASE_BALL)) {
-                    releaseBall();
-                }
-                else {
-                    checkForSpin();
-                }
+            rotatePlayer();
+            if (Input.GetKeyDown(RELEASE_BALL)) {
+                releaseBall();
             }
             else {
-                playerJumpMovement();
+                checkForSpin();
             }
         }
-        else if (!_jumpIsActive) {
-            movePlayer();
-        }
+        movePlayer();
     }
 
 
@@ -79,19 +69,11 @@ public class Player : MonoBehaviour
     }
 
 
-    // playerJump() begins the jump for the player
-    // Pre: Jump button input detected
-    // Post: jump begins
-    void playerJump() {
-        //_isVulnerable = false;
-        //_jumpIsActive = true;
-    }
-
-
     // pickUpBall() brings the spikeBall object back to the player
     // Pre: _playHoldingBall is false
     // Post: _playerHoldingBall true, ball is a child of the rotate GameObject
     public void pickUpBall() {
+        _movementSpeed = 2f;
         _playerHoldingBall = true;
         Vector3 targ = _spikeBall.transform.position;
         targ.z = 0f;
@@ -172,21 +154,13 @@ public class Player : MonoBehaviour
         GetComponentInChildren<SpikeBall>()._speed = calcBallSpeed();
         setRotationSpeed();
         _spikeBall.transform.passBallToObjects(this.transform.position, rotator.transform, _objects.transform);
+        _movementSpeed = 3f;
     }
 
 
     float calcBallSpeed() {
         float _ballSpeed = (_rotationSpeed * (float)MIN_BALL_LEASH * 2 * 3.142f);
         return _ballSpeed;
-    }
-
-
-    // playerJumpMovement() rotates the player around the ball
-    // Pre: user input the jump button
-    // Post: player moves in arc around ball
-    IEnumerator playerJumpMovement() {
-        Debug.Log("I'm jumping!!!! Jump so high!");
-        yield return new WaitForSeconds(5f);
     }
 
 
@@ -204,8 +178,9 @@ public class Player : MonoBehaviour
     // Post: player health is lowered
     public void damage(int damagePoints) {
         _playerHealth -= damagePoints;
+        _UIManager.UpdateLives(_playerHealth);
             if (_playerHealth < 1) {
-            GameState.playerDeath();
+                playerDeath();
         }
     }
 
@@ -237,5 +212,11 @@ public class Player : MonoBehaviour
             _currentTopSpeed += POWERUP_INCREMENT;
             _UIManager.UpdateTopSpeed(_currentTopSpeed);
         }
+    }
+
+
+    public void playerDeath() {
+        _gameIsActive = false;
+        StartCoroutine(_UIManager.GameOverFlickerRoutine());
     }
 }

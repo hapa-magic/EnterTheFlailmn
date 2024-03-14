@@ -81,7 +81,6 @@ public class Enemy : MonoBehaviour
 
     Vector3 findTarget() {
         Vector3 whereToMove = _player.position - transform.position;
-        Debug.Log(whereToMove);
         return whereToMove;
     }
 

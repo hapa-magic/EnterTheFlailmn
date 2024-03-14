@@ -54,28 +54,16 @@ public class GameState : MonoBehaviour
                 break;
             }
             Instantiate(_enemyPrefab1, _spawnVector, Quaternion.identity, _enemyContainer.transform);
-            yield return new WaitForSeconds(Random.Range(1, 2));
+            yield return new WaitForSeconds(Random.Range(1, 3));
             if (_uIManager.GetScore() > 25) {
-                
+                Instantiate(_enemyPrefab2, _spawnVector * -1, Quaternion.identity, _enemyContainer.transform);
             }
-            Instantiate(_enemyPrefab2, _spawnVector * -1, Quaternion.identity, _enemyContainer.transform);
-            yield return new WaitForSeconds(Random.Range(3, 5));
+            yield return new WaitForSeconds(Random.Range(1, 3));
+            if (_uIManager.GetScore() > 70) {
+                Instantiate(_enemyPrefab2, _spawnVector * -1, Quaternion.identity, _enemyContainer.transform);                
+            }
+            yield return new WaitForSeconds(Random.Range(1, 3));
         }
     }
 
-
-    // playerDeath() resets variables and stops enemies
-    // Pre: player runs out of health
-    // Post: all necessary variables reset, death screen printed to player
-    public static void playerDeath() {
-        printDeathScreen();
-        _gameIsActive = false;
-    }
-
-    // printDeathScreen() changes the UI to a death screen with options to return to main menu or play again
-    // Pre: player runs out of health
-    // Post: death screen output to player
-    public static void printDeathScreen() {
-        Time.timeScale = 0f;
-    }
 }

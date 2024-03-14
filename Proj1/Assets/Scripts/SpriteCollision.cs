@@ -23,7 +23,6 @@ public class SpriteCollision : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Enemy")) {
             if (other.gameObject.GetComponent<Enemy>()._canDamage == true) {
-                Debug.Log("Hey! We're taking damage :(");
                 _playerParent.damage(1);
             }
         }

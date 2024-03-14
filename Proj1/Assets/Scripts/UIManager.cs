@@ -8,11 +8,12 @@ using static Constants;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text _scoreText;
-    [SerializeField] private Sprite[] _livesSprites;
+    [SerializeField] private Sprite[] _liveSprites;
     [SerializeField] private Image _livesImg;
     [SerializeField] private TMP_Text _restartText;
     [SerializeField] private TMP_Text _currentSpeed;
     [SerializeField] private TMP_Text _topSpeed;
+    [SerializeField] private TMP_Text _gameOverText;
     [SerializeField] private GameObject _player;
     private GameState _gameManager;
     private int _score;
@@ -52,8 +53,17 @@ public class UIManager : MonoBehaviour
     // Pre: player collides with enemy
     // Post: sprite UI changes
 
-    public void UpdateLives(int currentLives)
-    {
-        _livesImg.sprite = _livesSprites[currentLives];
+    public void UpdateLives(int currentLives) {
+        _livesImg.sprite = _liveSprites[currentLives];
+    }
+
+
+    public IEnumerator GameOverFlickerRoutine() {
+        while(true) {
+            _gameOverText.text = "GAME OVER";
+            yield return new WaitForSeconds(0.5f);
+            _gameOverText.text = "";
+            yield return new WaitForSeconds(0.5f); 
+        }
     }
 }
