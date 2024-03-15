@@ -67,21 +67,27 @@ public class SpikeBall : MonoBehaviour
     // Post: ball bounces off in a new direction
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("Enemy")) {
-            other.gameObject.GetComponent<Enemy>().damage();
-            _score += 5;
+            if (other.gameObject.GetComponentInParent<Enemy>()._canDamage == true) {
+                other.gameObject.GetComponentInParent<Enemy>().damage();
+                _score += 5;
+            }
         }
         else if (other.gameObject.CompareTag("BlueEnemy")) {
             if ((GetComponent<SpriteRenderer>().sprite == _glowBallSprite) ||
                 (GetComponent<SpriteRenderer>().sprite == _glowGreenBallSprite))  {
-                other.gameObject.GetComponent<Enemy>().damage();
-                _score += 9;
+                    if (other.gameObject.GetComponentInParent<Enemy>()._canDamage == true) {
+                    other.gameObject.GetComponentInParent<Enemy>().damage();
+                    _score += 9;
+                }
             }
         }
         else if (other.gameObject.CompareTag("GreenEnemy")) {
             if ((GetComponent<SpriteRenderer>().sprite == _greenBallSprite) ||
                 (GetComponent<SpriteRenderer>().sprite == _glowGreenBallSprite)) {
-                other.gameObject.GetComponent<Enemy>().damage();
-                _score += 7;
+                    if (other.gameObject.GetComponentInParent<Enemy>()._canDamage == true) {
+                    other.gameObject.GetComponentInParent<Enemy>().damage();
+                    _score += 7;
+                }
             }
         }
         _uIManager.UpdateScore(_score);

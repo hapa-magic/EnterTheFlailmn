@@ -8,7 +8,7 @@ using static Constants;
 public class Player : MonoBehaviour
 {
     private int _startingZ = 0;
-    [SerializeField] private float _movementSpeed;
+    private float _movementSpeed;
     [SerializeField] private float _rotationSpeed = 1.0f;
     [SerializeField] private GameObject rotator;
     [SerializeField] private GameObject _objects;
@@ -16,6 +16,8 @@ public class Player : MonoBehaviour
     [SerializeField] private GameObject UIManager;
     [SerializeField] private GameObject _spikeBall;
     [SerializeField] private GameObject _playerSprite;
+    [SerializeField] private AudioClip _wooshClip;
+    private AudioSource _audioSource;
     float horizontalInput;
     float verticalInput;
     private bool _isVulnerable;
@@ -29,27 +31,36 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _playerHoldingBall = true;
         startPosition();
         _alternateKeyPressed = false;
         _UIManager = UIManager.GetComponent<UIManager>();
         _playerHealth = 3;
-        _movementSpeed = 2f;
+        _movementSpeed = 4f;
         _currentTopSpeed = (float)MIN_ROTATION;
-        //setBallPosition();
+        _audioSource = GetComponent<AudioSource>();
+        if (_audioSource == null) {
+            Debug.LogError("AudioSource is NULL"); 
+        }
+        else { 
+            _audioSource.clip = _wooshClip; 
+        }
     }
 
     // Update is called once per frame
     void Update() {
-        if (_playerHoldingBall) {
-            rotatePlayer();
-            if (Input.GetKeyDown(RELEASE_BALL)) {
-                releaseBall();
+        if (_gameIsActive) {
+            if (_playerHoldingBall) {
+                rotatePlayer();
+                if (Input.GetKeyDown(RELEASE_BALL)) {
+                    releaseBall();
+                }
+                else {
+                    checkForSpin();
+                }
             }
-            else {
-                checkForSpin();
-            }
+            movePlayer();
         }
-        movePlayer();
     }
 
 
@@ -73,7 +84,7 @@ public class Player : MonoBehaviour
     // Pre: _playHoldingBall is false
     // Post: _playerHoldingBall true, ball is a child of the rotate GameObject
     public void pickUpBall() {
-        _movementSpeed = 2f;
+        _movementSpeed = 4f;
         _playerHoldingBall = true;
         Vector3 targ = _spikeBall.transform.position;
         targ.z = 0f;
@@ -134,6 +145,7 @@ public class Player : MonoBehaviour
         if (_rotationSpeed > 3) {
             _spikeBall.GetComponent<SpriteRenderer>().sprite = _spikeBall.GetComponent<SpikeBall>()._glowBallSprite;
         }
+        _UIManager.EndIncreaseRotateText();
     }
 
 
@@ -154,7 +166,9 @@ public class Player : MonoBehaviour
         GetComponentInChildren<SpikeBall>()._speed = calcBallSpeed();
         setRotationSpeed();
         _spikeBall.transform.passBallToObjects(this.transform.position, rotator.transform, _objects.transform);
-        _movementSpeed = 3f;
+        _movementSpeed = 6f;
+        _UIManager.EndThrowBallText();
+        _audioSource.Play();
     }
 
 
@@ -179,9 +193,6 @@ public class Player : MonoBehaviour
     public void damage(int damagePoints) {
         _playerHealth -= damagePoints;
         _UIManager.UpdateLives(_playerHealth);
-            if (_playerHealth < 1) {
-                playerDeath();
-        }
     }
 
     // checkForSpin() assess if spin should increase or not
@@ -212,11 +223,5 @@ public class Player : MonoBehaviour
             _currentTopSpeed += POWERUP_INCREMENT;
             _UIManager.UpdateTopSpeed(_currentTopSpeed);
         }
-    }
-
-
-    public void playerDeath() {
-        _gameIsActive = false;
-        StartCoroutine(_UIManager.GameOverFlickerRoutine());
     }
 }

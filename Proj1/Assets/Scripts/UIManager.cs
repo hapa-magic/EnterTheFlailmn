@@ -15,15 +15,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_Text _topSpeed;
     [SerializeField] private TMP_Text _gameOverText;
     [SerializeField] private GameObject _player;
+    [SerializeField] private TMP_Text _throwBallText;
+    [SerializeField] private TMP_Text _increaseRotateText;
     private GameState _gameManager;
     private int _score;
 
     void Start()
     {
+        _offeredIncreaseRotationYet = false;
+        _offeredThrowYet = false;
         _scoreText.text = "Score: " + 0;
         _currentSpeed.text = "Current speed:" + MIN_ROTATION;
         _topSpeed.text = "Top speed: " + MIN_ROTATION;
         _restartText.gameObject.SetActive(false);
+        _throwBallText.gameObject.SetActive(false);
+        _increaseRotateText.gameObject.SetActive(false);
         _gameManager = GameObject.Find("GameManager").GetComponent<GameState>();
     }
 
@@ -33,8 +39,24 @@ public class UIManager : MonoBehaviour
     // Post: score updated in UI
     public void UpdateScore(int playerScore)
     {
-        _score += playerScore;
+        _score = playerScore;
         _scoreText.text = "Score: " + playerScore.ToString();
+        if (_offeredThrowYet == false && playerScore > 50) {
+            _throwBallText.gameObject.SetActive(true);
+            _offeredThrowYet = true;
+        }
+        if (_offeredIncreaseRotationYet == false && playerScore > 100) {
+            _increaseRotateText.gameObject.SetActive(true);
+            _offeredIncreaseRotationYet = true;
+        }
+    }
+
+    public void EndThrowBallText() {
+        _throwBallText.gameObject.SetActive(false);
+    }
+
+    public void EndIncreaseRotateText() {
+        _increaseRotateText.gameObject.SetActive(false);
     }
 
     public void UpdateCurrentSpeed(float speed) {
@@ -55,6 +77,9 @@ public class UIManager : MonoBehaviour
 
     public void UpdateLives(int currentLives) {
         _livesImg.sprite = _liveSprites[currentLives];
+        if(currentLives < 1) {
+            GameOverSequence(); 
+        }
     }
 
 
@@ -65,5 +90,15 @@ public class UIManager : MonoBehaviour
             _gameOverText.text = "";
             yield return new WaitForSeconds(0.5f); 
         }
+    }
+
+    public void GameOverSequence() {
+        _increaseRotateText.gameObject.SetActive(false);
+        _throwBallText.gameObject.SetActive(false);
+        _gameManager.GameOver();
+        _gameOverText.gameObject.SetActive(true);
+        _restartText.gameObject.SetActive(true);
+        _gameIsActive = false;
+        StartCoroutine(GameOverFlickerRoutine());
     }
 }

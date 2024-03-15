@@ -21,19 +21,13 @@ public class SpriteCollision : MonoBehaviour
     // Pre: Player collides with object that has a collider
     // Post: player picks up ball or powers up
     private void OnCollisionEnter2D(Collision2D other) {
-        if (other.gameObject.CompareTag("Enemy")) {
-            if (other.gameObject.GetComponent<Enemy>()._canDamage == true) {
-                _playerParent.damage(1);
-            }
-        }
-        else if (other.gameObject.CompareTag("SpikeBall")) {
+        if (other.gameObject.CompareTag("SpikeBall")) {
             _playerParent.pickUpBall();
         }
     }
     
     void OnTriggerEnter2D(Collider2D other) {
         if (other.gameObject.CompareTag("PowerUp")) {
-            Debug.Log("Powered up!");
             _playerParent.powerUp();
             Destroy(other.gameObject);
         }

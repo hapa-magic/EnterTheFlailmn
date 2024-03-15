@@ -20,6 +20,7 @@ public class Enemy : MonoBehaviour
     private GameObject _powerUp;
     public bool _canDamage;
     private bool _isAlive;
+
     
 
     // Start is called before the first frame update
@@ -29,7 +30,7 @@ public class Enemy : MonoBehaviour
         //_collider = GetComponent<BoxCollider2D>();
         _playerGO = GameObject.Find("Player");
         _player = _playerGO.transform;
-        //_audioSource = GetComponent<AudioSource>();
+        _audioSource = GetComponent<AudioSource>();
         _enemySprite = transform.GetChild(0);
         _enemyShadow = transform.GetChild(1);
         _canDamage = true;
@@ -66,17 +67,23 @@ public class Enemy : MonoBehaviour
             }
             yield return new WaitForSeconds(.3f);
             float accel = 2f;
+            StartCoroutine(beginFall());
             while (_enemySprite.position.y > transform.position.y) {
                 _enemySprite.transform.Translate(Vector3.down * accel * Time.deltaTime);
                 if (_enemySprite.transform.position.y < transform.position.y) {
+                    _canDamage = true;
                     _enemySprite.position = transform.position;
                 }
                 accel *= 1.25f;
                 yield return new WaitForSeconds(0.01f);
             }
-            _canDamage = true;
             yield return new WaitForSeconds(1.5f);
         }
+    }
+
+    IEnumerator beginFall() {
+        yield return new WaitForSeconds(0.1f);
+        _canDamage = true;
     }
 
     Vector3 findTarget() {
@@ -86,6 +93,7 @@ public class Enemy : MonoBehaviour
 
     public void damage() {
         if (_canDamage == true) {
+            _audioSource.Play();
             StartCoroutine(destroyEnemy());
         }
     }

@@ -19,12 +19,15 @@ public static class Constants
     public const KeyCode RESTART_GAME_BUTTON = KeyCode.R;
     public const KeyCode QUIT_GAME = KeyCode.Escape;
     public const int INIT_ROTATION_SPEED = 1;
-    public const float INCREASE_ROTATION = 0.2f;
-    public const float POWERUP_INCREMENT = 0.5f;
-    public const KeyCode RELEASE_BALL = KeyCode.Z;
+    public const float INCREASE_ROTATION = 0.1f;
+    public const float POWERUP_INCREMENT = 0.1f;
+    public const KeyCode RELEASE_BALL = KeyCode.Space;
     public static bool _playerHoldingBall = true;
     public const float STARTING_ROTATION_SPEED = 1.0f;
     public static bool _gameIsActive = true;
+    public static bool _offeredThrowYet;
+    public static bool _offeredIncreaseRotationYet;
+
 
 
     // passBallToObjects() changes the parent of an object and sets the launch vector
